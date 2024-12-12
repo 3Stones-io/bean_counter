@@ -51,3 +51,20 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :bean_counter, :github,
+  app_id: System.get_env("GITHUB_APP_ID"),
+  installation_id: System.get_env("GITHUB_INSTALLATION_ID"),
+  private_key: System.get_env("GITHUB_PRIVATE_KEY"),
+  access_token: System.get_env("GITHUB_ACCESS_TOKEN"),
+  project_id: System.get_env("GITHUB_PROJECT_ID"),
+  status_field_id: System.get_env("GITHUB_STATUS_FIELD_ID"),
+  status_in_progress: System.get_env("GITHUB_STATUS_IN_PROGRESS"),
+  status_in_review: System.get_env("GITHUB_STATUS_IN_REVIEW"),
+  start_date_field_id: System.get_env("GITHUB_START_DATE_FIELD_ID"),
+  end_date_field_id: System.get_env("GITHUB_END_DATE_FIELD_ID"),
+  org: "AlmirTestOrg",
+  repo: "optimajz_d_vorkflou"
+
+config :neuron,
+  url: "https://api.github.com/graphql"

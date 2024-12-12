@@ -38,7 +38,10 @@ defmodule BeanCounter.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:tentacat, "~> 2.4"},
+      {:joken, "~> 2.6"},
+      {:neuron, "~> 5.1"}
     ]
   end
 

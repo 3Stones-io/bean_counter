@@ -7,6 +7,8 @@ defmodule BeanCounterWeb.Router do
 
   scope "/api", BeanCounterWeb do
     pipe_through :api
+
+    resources "/webhooks", WebhookController, only: [:create]
   end
 
   # Enable LiveDashboard in development
