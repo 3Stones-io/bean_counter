@@ -20,6 +20,95 @@ if System.get_env("PHX_SERVER") do
   config :bean_counter, BeanCounterWeb.Endpoint, server: true
 end
 
+if config_env() in [:dev, :prod] do
+  # GitHub configuration for all environments
+  github_app_id =
+    System.get_env("GITHUB_APP_ID") ||
+      raise """
+      environment variable GITHUB_APP_ID is missing.
+      """
+
+  github_end_date_field_id =
+    System.get_env("GITHUB_END_DATE_FIELD_ID") ||
+      raise """
+      environment variable GITHUB_END_DATE_FIELD_ID is missing.
+      """
+
+  github_installation_id =
+    System.get_env("GITHUB_INSTALLATION_ID") ||
+      raise """
+      environment variable GITHUB_INSTALLATION_ID is missing.
+      """
+
+  github_org =
+    System.get_env("GITHUB_ORG") ||
+      raise """
+      environment variable GITHUB_ORG is missing.
+      """
+
+  github_private_key =
+    System.get_env("GITHUB_PRIVATE_KEY") ||
+      raise """
+      environment variable GITHUB_PRIVATE_KEY is missing.
+      """
+
+  github_project_id =
+    System.get_env("GITHUB_PROJECT_ID") ||
+      raise """
+      environment variable GITHUB_PROJECT_ID is missing.
+      """
+
+  github_repo =
+    System.get_env("GITHUB_REPO") ||
+      raise """
+      environment variable GITHUB_REPO is missing.
+      """
+
+  github_start_date_field_id =
+    System.get_env("GITHUB_START_DATE_FIELD_ID") ||
+      raise """
+      environment variable GITHUB_START_DATE_FIELD_ID is missing.
+      """
+
+  github_status_field_id =
+    System.get_env("GITHUB_STATUS_FIELD_ID") ||
+      raise """
+      environment variable GITHUB_STATUS_FIELD_ID is missing.
+      """
+
+  github_status_in_progress =
+    System.get_env("GITHUB_STATUS_IN_PROGRESS") ||
+      raise """
+      environment variable GITHUB_STATUS_IN_PROGRESS is missing.
+      """
+
+  github_status_in_review =
+    System.get_env("GITHUB_STATUS_IN_REVIEW") ||
+      raise """
+      environment variable GITHUB_STATUS_IN_REVIEW is missing.
+      """
+
+  github_webhook_secret =
+    System.get_env("GITHUB_WEBHOOK_SECRET") ||
+      raise """
+      environment variable GITHUB_WEBHOOK_SECRET is missing.
+      """
+
+  config :bean_counter, :github,
+    app_id: github_app_id,
+    end_date_field_id: github_end_date_field_id,
+    installation_id: github_installation_id,
+    org: github_org,
+    private_key: github_private_key,
+    project_id: github_project_id,
+    repo: github_repo,
+    start_date_field_id: github_start_date_field_id,
+    status_field_id: github_status_field_id,
+    status_in_progress: github_status_in_progress,
+    status_in_review: github_status_in_review,
+    webhook_secret: github_webhook_secret
+end
+
 if config_env() == :prod do
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you

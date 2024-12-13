@@ -75,7 +75,7 @@ defmodule BeanCounterWeb.WebhookController do
              "node_id" => item_id,
              "content_type" => "Issue"
            }
-         } = params
+         }
        ) do
     Operations.set_end_date(item_id)
     Logger.info("Set end date for item #{item_id}")
