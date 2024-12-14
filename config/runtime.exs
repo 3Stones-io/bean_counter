@@ -99,7 +99,7 @@ if config_env() in [:dev, :prod] do
     end_date_field_id: github_end_date_field_id,
     installation_id: github_installation_id,
     org: github_org,
-    private_key: github_private_key,
+    private_key: Base.decode64!(github_private_key),
     project_id: github_project_id,
     repo: github_repo,
     start_date_field_id: github_start_date_field_id,

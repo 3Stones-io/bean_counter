@@ -8,6 +8,7 @@ defmodule BeanCounterWeb.Router do
   scope "/api", BeanCounterWeb do
     pipe_through :api
 
+    get "/health", HealthController, :index
     resources "/webhooks", WebhookController, only: [:create]
   end
 
