@@ -7,6 +7,8 @@ defmodule BeanCounterWeb.WebhookController do
 
   action_fallback BeanCounterWeb.FallbackController
 
+  plug :verify_signature when action in [:create]
+
   def create(conn, params) do
     # Get the GitHub event type from headers
     event_type = get_req_header(conn, "x-github-event") |> List.first()
@@ -188,5 +190,22 @@ defmodule BeanCounterWeb.WebhookController do
     File.write!(path, Jason.encode!(payload, pretty: true))
 
     Logger.info("Webhook received and logged to #{path}")
+  end
+
+  defp verify_signature(conn, _opts) do
+    signature = get_req_header(conn, "x-hub-signature-256") |> List.first()
+    secret = github_config(:webhook_secret)
+    body = conn.assigns[:raw_body]
+
+    computed =
+      "sha256=" <> (:crypto.mac(:hmac, :sha256, secret, body) |> Base.encode16(case: :lower))
+
+    if Plug.Crypto.secure_compare(signature, computed) do
+      assign(conn, :raw_body, body)
+    else
+      conn
+      |> send_resp(401, "Invalid signature")
+      |> halt()
+    end
   end
 end
