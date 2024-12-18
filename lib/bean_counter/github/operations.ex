@@ -44,9 +44,7 @@ defmodule BeanCounter.GitHub.Operations do
   end
 
   def move_project_item(item_id, field_id, status_name) do
-    Logger.debug("Moving item #{item_id} to status #{status_name}")
     option_id = get_status_option_id(status_name)
-    Logger.debug("Using option_id: #{option_id}")
 
     query = """
     mutation {
@@ -102,10 +100,7 @@ defmodule BeanCounter.GitHub.Operations do
   end
 
   def set_end_date(item_id) do
-    Logger.debug("Setting end date for item #{item_id}")
     today = Date.utc_today() |> Date.to_iso8601()
-    Logger.debug("Using date: #{today}")
-    Logger.debug("End date field ID: #{github_config(:end_date_field_id)}")
 
     query = """
     mutation {
@@ -126,15 +121,11 @@ defmodule BeanCounter.GitHub.Operations do
     }
     """
 
-    Logger.debug("GraphQL mutation: #{query}")
-
     case graphql_request(query) do
-      {:ok, response} ->
-        Logger.debug("Successfully set end date. Response: #{inspect(response)}")
+      {:ok, _response} ->
         :ok
 
       error ->
-        Logger.error("Failed to set end date: #{inspect(error)}")
         {:error, error}
     end
   end
@@ -246,34 +237,23 @@ defmodule BeanCounter.GitHub.Operations do
       authorization: "Bearer #{client.auth.access_token}"
     ]
 
-    Logger.debug("GraphQL Query: #{inspect(query)}")
-    Logger.debug("GraphQL Variables: #{inspect(variables)}")
-
     case Neuron.query(query, variables,
            headers: headers,
            url: Application.get_env(:neuron, :url)
          ) do
-      {:ok, response} = success ->
-        Logger.debug("GraphQL Success Response: #{inspect(response)}")
+      {:ok, _response} = success ->
         success
 
       error ->
-        Logger.error("GraphQL Error Response: #{inspect(error)}")
         error
     end
   end
 
   def get_status_option_id(status_name) do
-    Logger.debug("Getting option_id for status: #{status_name}")
-
-    option_id =
-      case status_name do
-        "In review" -> github_config(:status_in_review)
-        "In progress" -> github_config(:status_in_progress)
-        _ -> raise "Unknown status: #{status_name}"
-      end
-
-    Logger.debug("Option ID: #{option_id}")
-    option_id
+    case status_name do
+      "In review" -> github_config(:status_in_review)
+      "In progress" -> github_config(:status_in_progress)
+      _ -> raise "Unknown status: #{status_name}"
+    end
   end
 end
